@@ -1,6 +1,8 @@
 from agents import Agent, Runner, function_tool
 from connection import config
 import requests
+import chainlit as cl
+
 
 
 @function_tool
@@ -128,5 +130,16 @@ Always return tool outputs exactly as they are, line-by-line, no rephrasing.
     tools=[get_products_under_budget, get_all_products, filter_by_category],
     
 ) 
+
+
+@cl.on_chat_start
+async def on_chat_start():
+    await cl.Message(content="👋 Hi! I'm your shopping assistant. Ask me to search by category, price, or brand.").send()
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    user_input = message.content
+    result = Runner.run_sync(agent, user_input, run_config=config)
+    await cl.Message(content=result.final_output).send()
 
 
