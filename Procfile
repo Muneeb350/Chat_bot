@@ -1,1 +1,2 @@
-web: chainlit run shopping.py --host 0.0.0.0 --port $PORT
+web: chainlit run shopping.py --port $PORT --host 0.0.0.0
+
